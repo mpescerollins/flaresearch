@@ -5,7 +5,7 @@ from threeML import *
 from threeML.io.package_data import get_path_of_data_file
 from threeML.utils.statistics.stats_tools import Significance
 
-import likelihhod_analyis as la
+import likelihood_analyis as la
 
 
 
