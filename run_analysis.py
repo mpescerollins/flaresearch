@@ -21,22 +21,24 @@ if __name__ == "__main__":
     stix_t0 = args.stix_t0
     t0_list = args.t0_list  
     if t0_list is not None:
-        outputfile = 'flare_search_results.csv'
+        time_range_0 = t0_list.split('_')[-2]
+        time_range_1 = t0_list.split('_')[-1].replace('.txt','')
+        outputfile = 'flare_search_results_%s_%s.csv' % (time_range_0, time_range_1)
         outstr = 'FlareName, TS, inFoV\n'
         with open(t0_list,'r') as f:
             lines = f.readlines()
             for line in lines:
-             
-                t0 = line.split(',')[1].strip()
+                if '#' not in line:
+                    t0 = line.split(',')[1].strip()
                 
-                dt_t0 = la.str2datetime(t0)
-                flare_name = la.build_source_name(dt_t0)
-                print("Analyzing flare at GOES time %s" % t0)
-                ts = la.doAnalysis(t0)
-                if ts==-1.0:
-                    outstr +='%s, %.2f, False\n' % (flare_name,ts)
-                else:
-                    outstr +='%s, %.2f, True\n' % (flare_name,ts)
+                    dt_t0 = la.str2datetime(t0)
+                    flare_name = la.build_source_name(dt_t0)
+                    print("Analyzing flare at GOES time %s" % t0)
+                    ts = la.doAnalysis(t0)
+                    if ts==-1.0:
+                        outstr +='%s, %.2f, False\n' % (flare_name,ts)
+                    else:
+                        outstr +='%s, %.2f, True\n' % (flare_name,ts)
         with open(outputfile,'w') as f:
             f.write(outstr)
         print("Results written to %s" % outputfile)
